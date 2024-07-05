@@ -1,37 +1,37 @@
 #!/bin/bash
 
 # Criar usuário
-useradd augusto
+adduser -D augusto
 
 # Definir senha
 echo "augusto:123456" | chpasswd
 
 # Adicionar ao grupo sudo
-usermod -aG sudo augusto
+addgroup augusto wheel
 
 # Verificar se o usuário foi adicionado com sucesso
 id augusto
 
 # Verificar se o usuário tem permissões de sudo
-sudo -l -U augusto
+su - augusto -c "sudo -l"
 
+# Atualizar a lista de pacotes
 apk update
 
+# Instalar certificados ca, curl, gnupg
 apk add ca-certificates curl gnupg
 
-apk add --update docker openrc. 
+# Instalar docker e openrc
+apk add docker openrc
 
+# Adicionar repositório do Docker
+apk add docker-cli
 
+# Configurar Docker para iniciar no boot
+rc-update add docker boot
 
+# Iniciar o serviço Docker
+service docker start
 
-
-
-
-
-apk add docker-ce docker-ce-cli
-
-systemctl enable docker
-
-systemctl stop docker
-
-systemctl restart docker
+# Verificar o status do serviço Docker
+service docker status
