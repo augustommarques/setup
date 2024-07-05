@@ -1,37 +1,26 @@
 #!/bin/bash
 
-# Criar usuário
-adduser -D augusto
+# Atualizar repositórios e instalar pacotes necessários
+apk update
+apk add ca-certificates curl gnupg sudo shadow openrc docker
 
-# Definir senha
+# Criar usuário e definir senha
+adduser -D augusto
 echo "augusto:123456" | chpasswd
 
-# Adicionar ao grupo sudo
-addgroup augusto wheel
+# Adicionar usuário ao grupo sudo
+adduser augusto wheel
 
 # Verificar se o usuário foi adicionado com sucesso
 id augusto
 
 # Verificar se o usuário tem permissões de sudo
-su - augusto -c "sudo -l"
+echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+sudo -l -U augusto
 
-# Atualizar a lista de pacotes
-apk update
-
-# Instalar certificados ca, curl, gnupg
-apk add ca-certificates curl gnupg
-
-# Instalar docker e openrc
-apk add docker openrc
-
-# Adicionar repositório do Docker
-apk add docker-cli
-
-# Configurar Docker para iniciar no boot
+# Habilitar e iniciar o serviço Docker
 rc-update add docker boot
-
-# Iniciar o serviço Docker
 service docker start
 
-# Verificar o status do serviço Docker
+# Verificar status do Docker
 service docker status
