@@ -17,7 +17,3 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 echo "root ALL=(ALL) ALL" >> /etc/sudoers
 
 sudo -l -U augusto
-
-git config --global user.name "Augusto Marques"
-git config --global user.email augusto.mendes@ymail.com
-git commit --amend --reset-author
